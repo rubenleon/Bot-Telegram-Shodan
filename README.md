@@ -5,11 +5,11 @@
 
 Lo primero que tenemos que hacer es buscar al **@botFather** en el Telegram
 
-![/newbot](https://github.com/rubenleon/Bot-Telegram-Shodan/blob/master/img/Telegram-1.jpg)
+![/newbot](img/Telegram-1.jpg)
 
 Pulsamos la opción de */newbot*
 
-![/newbot](/img/Telegram-1.jpg)
+![/newbot](/img/Telegram-2.jpg)
 
 Rellenamos la información que nos pide **@botFather** y nos dará la dirección HTTP de nuestro BOT.
 
