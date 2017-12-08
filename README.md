@@ -1,6 +1,22 @@
 # Bot de Telegram de Hacking
 > El bot de Telegram incluye herramientas como Shodan, DNS, Whois.
 
+## Creación del Bot
+
+Lo primero que tenemos que hacer es buscar al **@botFather** en el Telegram
+
+![/newbot](https://github.com/rubenleon/Bot-Telegram-Shodan/blob/master/img/Telegram-1.jpg)
+
+Pulsamos la opción de */newbot*
+
+![/newbot](/img/Telegram-1.jpg)
+
+Rellenamos la información que nos pide **@botFather** y nos dará la dirección HTTP de nuestro BOT.
+
+## Obtención de la Api de Shodan
+
+Nos vamos a la web oficial de https://www.shodan.io/, nos tenemos que logear y pulsar en el botón **SHOW API KEY**
+
 ## Instalación
 
 **Linux** (Ubuntu - Debian):
@@ -22,19 +38,11 @@ pip install pyTelegramBotAPI
 ```sh
 pip install shodan
 ```
-## Creación del Bot
 
-Lo primero que tenemos que hacer es buscar al **@botFather** en el Telegram
+## Documentación del Bot
 
+Tenemos que añadir la api de telegram y de shodan en los ficheros:
+*shodan-key.txt*
+*telegram-key.txt*
 
-
-![/newbot](https://github.com/rubenleon/Bot-de-Telegram/blob/master/img/Telegram-1.jpg)
-
-
-Pulsamos la opción de */newbot*
-
-...
-
-# Enlace de la Documentación
-
-https://github.com/eternnoir/pyTelegramBotAPI
+Después ejecutamos el archivo de **inicio.py**
