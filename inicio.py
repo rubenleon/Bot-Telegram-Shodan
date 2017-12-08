@@ -52,7 +52,7 @@ def quitar_teclado(object,chat_id):
 	markup = types.ReplyKeyboardRemove(selective=False)
 	bot.send_message(chat_id, "CANCELAR", reply_markup=markup)
 
-TOKEN = open('shodanKey').readline().rstrip('\n') # Ponemos nuestro Token generado con el @BotFather
+TOKEN = open('telegram-key.txt').readline().rstrip('\n') # Ponemos nuestro Token generado con el @BotFather
 
 bot = telebot.TeleBot(TOKEN) # Combinamos la declaración del Token con la función de la API
 diccionario_shodan = None

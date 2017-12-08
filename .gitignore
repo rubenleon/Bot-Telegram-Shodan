@@ -97,5 +97,9 @@ ENV/
 
 # mypy
 .mypy_cache/
-shodan-key
+
 pruebas/
+shodan-key.txt
+telegram-key.txt
+telegram-key.txt
+ejemplo.txt
