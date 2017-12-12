@@ -1,30 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import shodan
+from class_log import Log
 
 class Info_Shodan():
     def __init__(self):
-        self.key = TOKEN = open('shodan-key.txt').readline().rstrip('\n')
+        self.l = Log("log/")
+        self.key = open('shodan-key.txt').readline().rstrip('\n')
         self.api = shodan.Shodan(self.key)
         self.resultado_total = None
         self.resultado_matches = None
-        print("INICIO")
+        self.l.logp("INICIO")
 
     def buscar(self,busqueda,nlimit=10):
         try:
             # Buscamos en Shodan con el método WebAPI.search()
-            print("BUSCANDO ...")
+            self.l.logp("Buscando '"+busqueda+"' en ishodan ... ")
             resultados = self.api.search(busqueda,limit=nlimit)
             #resultados = self.api.search('proconsi',limit=15)
-            print("FIN DEL BUSQUEDA")
-            print("Resultados: "+str(resultados['total']))
+            self.l.logp("Resultados totales de Shodan: "+str(resultados['total']))
+            self.l.logp("Fin de la Búsqueda")
+
 
             ################################################################################
             # Obtneer resultado
             self.resultado_total = resultados['total'] #Resultado total en la BBDD de Shodan
-            print("aqui_11")
             self.nlimit = nlimit #Número de resultado maximo de telegram
-            print("aqui_22")
 
             if(self.resultado_total < self.nlimit):
                 self.nlimit = self.resultado_total
@@ -37,7 +38,30 @@ class Info_Shodan():
             return True
 
         except shodan.APIError as e:
-            return('Error: %s' % e)
+            self.l.logp('Error ishodan: %s' % e)
+            return('Error ishodan: %s' % e)
+
+    def host(self,ip):
+        host = self.api.host(ip)
+        print(host)
+        print()
+        print()
+        print()
+
+        for c,item in enumerate(host['data']):
+            print(str(c)+" OTRO ... \n")
+            print(item)
+            print()
+        exit()
+
+        # Print general info
+
+        print ('IP: %s ' % host['ip_str'])
+        print ('Organizacion: %s ' % host.get('org', 'n/a'))
+        print ('Sistema operativo: %s ' % host.get('os', 'n/a'))
+        for item in host['data']:
+            print ('Puerto: %s ' % item['port'])
+            print ('Banner: %s ' % item['data'])
 
     def pantalla(self):
         for i in self.resultado_matches:
@@ -117,10 +141,9 @@ class Info_Shodan():
 if __name__ == "__main__":
     print("Ejemplo")
     i = Info_Shodan()
-    res = i.buscar("proconsi")
-    if(res==True):
-        print(i.datos_telegram())
-    else:
-        print(res)
-
-print("fin")
+    #res = i.host("41.142.245.134")
+    res = i.host("88.20.94.195")
+    #if(res==True):
+    #    print(i.datos_telegram())
+    #else:
+    #    print(res)

@@ -1,28 +1,24 @@
-#import urllib.request
-#import os
-#import json
-#import time
+import time
 import requests
 import telebot #Importamos las librería
 from telebot import types
 #import sys
 #import os
 #import string
-#import subprocess
-#from datetime import datetime, date, time, timedelta
 #import math
 
+#LIBRERIAS PROPIAS
 from biblioteca import Biblioteca
-from busqueda_shodan import Info_Shodan
+from ishodan import Info_Shodan
+from class_log import Log
 
 def teclado_tl(num):
 	markup = types.ReplyKeyboardMarkup(row_width=5)
-	print("aqui")
+
 	mi_array = []
 	for i in range(1,num+1):
 		mi_array.append(types.KeyboardButton(i))
 
-	print("aqui2")
 	#num_teclado = math.ceil(num)
 	#num_teclado2 = math.floor(num)
 	#print("Teclado numero: "+str(num_teclado))
@@ -35,18 +31,10 @@ def teclado_tl(num):
 	markup.add(*mi_array)
 	#markup.add(mi_array[1])
 	#markup.add(mi_array[2])
-	print("aqui3")
-	itembtncancelar = types.KeyboardButton('cancelar')
-	print("aqui4")
-	markup.row(itembtncancelar)
-	print("aqui5")
-	return markup
 
-	#itembtn10 = types.KeyboardButton('10')
-	#itembtnc = types.KeyboardButton('cancelar')
-	#markup.row(itembtn1, itembtn2, itembtn3,itembtn4,itembtn5,itembtn6,itembtn7,itembtn8,itembtn9,itembtn10)
-	#markup.row(itembtn1, itembtn2, itembtn3,itembtn4,itembtn5)
-	#markup.row(itembtnc)
+	itembtncancelar = types.KeyboardButton('cancelar')
+	markup.row(itembtncancelar)
+	return markup
 
 def quitar_teclado(object,chat_id):
 	markup = types.ReplyKeyboardRemove(selective=False)
@@ -56,15 +44,12 @@ TOKEN = open('telegram-key.txt').readline().rstrip('\n') # Ponemos nuestro Token
 
 bot = telebot.TeleBot(TOKEN) # Combinamos la declaración del Token con la función de la API
 diccionario_shodan = None
-#print(tb.get_me()) # 240092937
-
-@bot.message_handler(commands=['start', 'help'])
-def send_welcome(message):
-	chat_id = message.from_user.id
-	bot.send_message(chat_id, "Hola "+str(message.from_user.first_name)+" "+str(message.from_user.last_name))
 
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
+
+	l = Log("log/")
+
 	chat_id = message.from_user.id
 
 	if(message.text.isdigit()):
@@ -82,10 +67,7 @@ def echo_all(message):
 				print("Diccionario Shodan",dict_shodan)
 				bot.send_message(chat_id,dict_shodan,parse_mode="HTML")
 		else:
-			print("Lo siento")
-
-
-
+			print("Lo siento") # Sin implementar
 
 	if(message.text.find("shodan")!=-1):
 		sms = message.text
@@ -110,7 +92,7 @@ def echo_all(message):
 				#print("n_array_tl: ",n_array_tl)
 
 				markup = teclado_tl(resultados)
-				print("markup listo")
+				l.log("markup generado.")
 
 				for datos_tl in array_tl:
 					#print("Diccionario IP: ",i.diccionario_ip)
@@ -127,35 +109,14 @@ def echo_all(message):
 			else:
 				bot.send_message(chat_id,res,parse_mode="HTML")
 
-
-	elif message.text == "/control":
-		#from telebot import types
-		markup = types.ReplyKeyboardMarkup()
-		itembtn1 = types.KeyboardButton('1')
-		itembtn2 = types.KeyboardButton('2')
-		itembtn3 = types.KeyboardButton('3')
-		itembtn4 = types.KeyboardButton('4')
-		itembtn5 = types.KeyboardButton('5')
-		itembtn6 = types.KeyboardButton('6')
-		itembtn7 = types.KeyboardButton('7')
-		itembtn8 = types.KeyboardButton('8')
-		itembtn9 = types.KeyboardButton('9')
-		itembtn10 = types.KeyboardButton('10')
-		itembtnc = types.KeyboardButton('cancelar')
-		markup.row(itembtn1, itembtn2, itembtn3,itembtn4,itembtn5,itembtn6,itembtn7,itembtn8,itembtn9,itembtn10)
-		markup.row(itembtn1, itembtn2, itembtn3,itembtn4,itembtn5)
-		markup.row(itembtnc)
-
-		#configuración de salidas
-		bot.send_message(chat_id, "Control de la BASE:", reply_markup=markup)
-
 	elif message.text == "/a":
 		markup = teclado_tl(20)
 		bot.send_message(chat_id, "Elige una opción:", reply_markup=markup)
 
-
-	elif message.text == "/ayuda":
-		bot.send_message(chat_id, "Ayuda")
+	elif message.text == "/autor":
+		texto = "Autor: Rubén León"
+		texto+= "Github: "
+		bot.send_message(chat_id, texto)
 
 	elif message.text == "cancelar":
 		#from telebot import types
@@ -166,28 +127,40 @@ def echo_all(message):
 		#bot.send_message(chat_id, "CANCELAR", reply_markup=markup)
 
 	#print(message)
+	id_tele = str(message.from_user.id)
+	nombre = str(message.from_user.first_name)
+	apellido = str(message.from_user.last_name)
+	mensaje = str(message.text)
+
 	print("")
-	print("ID: "+str(message.from_user.id)) #id de usuario
-	print("Nombre: "+str(message.from_user.first_name)) #Nombre de usuario
-	print("Apellido: "+str(message.from_user.last_name)) #Apellido de usuario
-	print("Mensaje: "+str(message.text)) #Mensaje
+	print("ID: "+id_tele) #id de usuario
+	print("Nombre: "+nombre) #Nombre de usuario
+	print("Apellido: "+apellido) #Apellido de usuario
+	print("Mensaje: "+mensaje) #Mensaje
 	print("")
 
+	l.log("ID:"+id_tele+"-Nombre:"+nombre+"-Apellido:"+apellido+"-Mensaje:"+mensaje)
 
-def polling2():
+
+def inicializar_bot():
+	l = Log("log/")
+	l.logp("Arranque del Bot")
 	try:
 		bot.polling(True,False,True)
-		print("Hola")
 	except requests.exceptions.ReadTimeout:
 		print("Timeout occurred")
-		time.sleep(1)
-		print("Pausa de 1 segundo")
-		polling2()
+		l.log("Timeout occurred")
+		time.sleep(2)
+		print("Pausa de 2 segundo")
+		l.log("Pausa de 2 segundo")
+		inicializar_bot()
 	except requests.exceptions.ConnectionError:
 		print("Error en la conexión")
-		time.sleep(1)
-		print("Pausa de 1 segundo")
-		polling2()
+		l.log("Error en la conexión")
+		time.sleep(2)
+		print("Pausa de 2 segundo")
+		l.log("Pausa de 2 segundo")
+		inicializar_bot()
 		#print(except)
 
-polling2()
+inicializar_bot()

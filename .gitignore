@@ -101,5 +101,7 @@ ENV/
 pruebas/
 shodan-key.txt
 telegram-key.txt
-telegram-key.txt
-ejemplo.txt
+
+log/2017-12-12-log.txt
+log/2017-12-12-error.txt
+*.txt
