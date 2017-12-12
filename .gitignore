@@ -99,9 +99,4 @@ ENV/
 .mypy_cache/
 
 pruebas/
-shodan-key.txt
-telegram-key.txt
-
-log/2017-12-12-log.txt
-log/2017-12-12-error.txt
 *.txt
