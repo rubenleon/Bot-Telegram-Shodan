@@ -100,3 +100,6 @@ ENV/
 
 pruebas/
 *.txt
+shodan-key.txt
+telegram-key.txt
+telegram-key.txt
