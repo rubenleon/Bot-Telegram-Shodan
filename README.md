@@ -15,15 +15,20 @@ Rellenamos la información que nos pide **@botFather** y nos dará **TOKEN** de 
 
 ## Añadir Comandos al Bot
 
-> 1
+> 1. Escribimos el comando **/mybots**.
 
 ![/newbot](img/Telegram-3.jpg)
 
-> 2
+> 2. Editamos el Bot pulsando en el botón **Edit Bot**
 
 ![/newbot](img/Telegram-4.jpg)
 
-> 3
+> 3. Pulsamos en el botón de **Edit Commands** y escribimos la lista de comandos con este formato:
+
+```sh
+shodan - busqueda
+autor - autor del bot
+```
 
 ![/newbot](img/Telegram-5.jpg)
 
