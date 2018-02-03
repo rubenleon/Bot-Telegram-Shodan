@@ -15,12 +15,13 @@ Rellenamos la información que nos pide **@botFather** y nos dará **TOKEN** de 
 
 ## Añadir Comandos al Bot
 
-Lo primero que tenemos que hacer es buscar al **@botFather** en el Telegram
-
+> 1
 ![/newbot](img/Telegram-3.jpg)
 
+> 2
 ![/newbot](img/Telegram-4.jpg)
 
+> 3
 ![/newbot](img/Telegram-5.jpg)
 
 ## Obtención de la Api de Shodan
