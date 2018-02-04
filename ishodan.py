@@ -11,7 +11,6 @@ class Info_Shodan():
         self.resultado_total = None
         self.resultado_matches = None
         self.array_ip = []
-        self.l.logp("INICIO")
 
     def buscar(self,busqueda,nlimit=10):
         try:
@@ -23,11 +22,11 @@ class Info_Shodan():
 
 
             ################################################################################
-            # Obtneer resultado
+            # Obtener resultado
             self.resultado_total = resultados['total'] #Resultado total en la BBDD de Shodan
             self.nlimit = nlimit #Número de resultado maximo de telegram
 
-            if(self.resultado_total < self.nlimit):
+            if(self.resultado_total < self.nlimit): #Importante para sacar correctamente el teclado.
                 self.nlimit = self.resultado_total
             ################################################################################
 
@@ -42,11 +41,9 @@ class Info_Shodan():
             return('Error ishodan: %s' % e)
 
     def host(self,ip):
+        cadena="\n<b>**INFORMACIÓN DEL HOST**</b>\n\n"
         host = self.api.host(ip)
         print(host)
-        print()
-        print()
-        print()
 
         for c,item in enumerate(host["data"]):
             print(str(c)+" OTRO ... \n")
@@ -54,40 +51,44 @@ class Info_Shodan():
             print()
 
 
-        # Print general info
-
-        print ('IP: %s ' % host['ip_str'])
-        print ('Organizacion: %s ' % host.get('org', 'n/a'))
-        print ('Sistema operativo: %s ' % host.get('os', 'n/a'))
-        print ('city: %s ' % host.get('city', 'n/a'))
-        print ('region code: %s ' % host.get('region_code', 'n/a'))
-        print ('area_code: %s ' % host.get('area_code', 'n/a'))
-        print ('last_update: %s ' % host.get('last_update', 'n/a'))
-        print ('country_code: %s ' % host.get('country_code3', 'n/a'))
-        print ('country_name: %s ' % host.get('country_name', 'n/a'))
-        print ('latitude: %s ' % host.get('latitude', 'n/a'))
-        print ('longitude: %s ' % host.get('longitude', 'n/a'))
-        print ('isp: %s ' % host.get('isp', 'n/a'))
-        print ('asn: %s ' % host.get('asn', 'n/a'))
-        print ('hostname: %s ' % host.get('hostname', 'n/a'))
-        print ('Puertos: %s ' % host.get('ports', 'n/a'))
+        # Guardamos la info en una cadena
+        cadena+='<b>IP:</b> {}\n'.format(host['ip_str'])
+        cadena+='<b>Organizacion:</b> {}\n'.format(host.get('org', 'n/a'))
+        cadena+='<b>Sistema operativo:</b> {}\n'.format(host.get('os', 'n/a'))
+        cadena+='<b>City:</b> {}\n'.format(host.get('city', 'n/a'))
+        cadena+='<b>Region code:</b> {}\n'.format(host.get('region_code', 'n/a'))
+        cadena+='<b>area_code:</b> {}\n'.format(host.get('area_code', 'n/a'))
+        cadena+='<b>Last_update:</b> {}\n'.format(host.get('last_update', 'n/a'))
+        cadena+='<b>Country_code:</b> {}\n'.format(host.get('country_code3', 'n/a'))
+        cadena+='<b>Country_name:</b> {}\n'.format(host.get('country_name', 'n/a'))
+        cadena+='<b>Latitude:</b> {}\n'.format(host.get('latitude', 'n/a'))
+        self.lat = host.get('latitude', 'n/a')
+        cadena+='<b>Longitude:</b> {}\n'.format(host.get('longitude', 'n/a'))
+        self.log = host.get('longitude', 'n/a')
+        cadena+='<b>Isp:</b> {}\n'.format(host.get('isp', 'n/a'))
+        cadena+='<b>Asn:</b> {}\n'.format(host.get('asn', 'n/a'))
+        cadena+='<b>Hostname:</b> {}\n'.format(host.get('hostname', 'n/a'))
+        cadena+='<b>Puertos:</b> {}\n'.format(host.get('ports', 'n/a'))
         print()
-        print("Informaciónn del Banner de cada puerto:\n")
+        cadena+="\n\n<b>Información del Banner de cada puerto:</b>\n\n"
+
+        for dato in host['data']:
+            cadena+="<b>Puerto:</b> {}\n".format(dato['port'])
+            cadena+="<b>Transport:</b> {}\n".format(dato['transport'])
+            cadena+="<b>Banner:</b> {}\n".format(dato['data'])
 
         for dato in host['data']:
             print ('Puerto: %s ' % dato['port'])
             print ('Transport: %s ' % dato['transport'])
             print ('Banner: %s ' % dato['data'])
 
-    def pantalla(self):
-        for i in self.resultado_matches:
-            print(i)
-            exit()
-            print ('IP: %s' % i['ip_str'])
-            print ('Data: %s' % i['data'])
-            print ('Hostnames: %s' % i['hostnames'])
-            print ('Puerto: %s' % i['port'])
-            print ('')
+        return cadena
+
+    def localizacion(self):
+        if(self.lat==None or self.log==None):
+            return False
+        else:
+            return str(self.lat)+";"+str(self.log)
 
     def datos_telegram_location(self,location):
         texto = "\n"
@@ -144,9 +145,6 @@ class Info_Shodan():
             array_ip_cont = [cont,ip]
             self.array_ip.append(array_ip_cont)
 
-            #añadimos valor al diccionario_ip
-            self.diccionario_ip[cont] = i['ip_str']
-
             #texto+=("<strong>Modulo:</strong> %s\n" % i['module'])
             texto+=("<strong>ISP:</strong> %s\n" % i['isp'])
 
@@ -157,8 +155,8 @@ class Info_Shodan():
 
             data = i['data']
             n_data_len = len(data)
-            if(n_data_len >= 100):
-                data = data[0:100]
+            if(n_data_len >= 40):
+                data = data[0:45]
             #print("logitud: ",len(data))
             #exit()
             texto+=("<strong>Data:</strong><code>\n%s\n</code>" % data)

@@ -99,7 +99,4 @@ ENV/
 .mypy_cache/
 
 pruebas/
-*.txt
-shodan-key.txt
-telegram-key.txt
-telegram-key.txt
+

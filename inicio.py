@@ -87,20 +87,16 @@ def crear_teclado_tl(num):
 	markup.row(itembtncancelar) #creación de botón cancelar
 	return markup
 
-def quitar_teclado(object,chat_id):
-	markup = types.ReplyKeyboardRemove(selective=False)
-	bot.send_message(chat_id, "CANCELAR", reply_markup=markup)
-
 def obtener_numero_teclado(message):
 	if(int(message.text) >=1 and int(message.text) <=20):
 		usuario = obtener_usuario_BBDD(message.from_user.id)
 		token = usuario[3]
-		array_token = generar_array_key_token(token)
+		array_token = generar_array_key_token_BBDD(token)
 
 		indice = int(message.text)-1
 		valor = array_token[indice]['ip']
 		print("valor:",valor)
-		return valor
+		return str(valor)
 
 	else:
 		return "Lo siento, tiene que ser un número del 1 al 20"
@@ -111,7 +107,7 @@ def obtener_numero_teclado(message):
 
 TOKEN = open('telegram-key.txt').readline().rstrip('\n') # Ponemos nuestro Token generado con el @BotFather
 bot = telebot.TeleBot(TOKEN) # Combinamos la declaración del Token con la función de la API
-diccionario_shodan = None
+i = Info_Shodan() #Inicializo la Clase Info_Shodan()
 
 ##Comprobamos si existe la BBDD, sino creamos la BBDD##
 if path.isfile("usuarios.db") != True:
@@ -128,8 +124,6 @@ if path.isfile("usuarios.db") != True:
 	conexion.close() # Cerramos la conexións
 
 
-
-
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
 
@@ -139,9 +133,22 @@ def echo_all(message):
 		print("Se encontro el usuario '{}' en la BBDD".format(chat_id))
 
 		if(message.text.isdigit()):
-			r = obtener_numero_teclado(message)
-			if(r!=False):
-				print("Mostramos toda la info que nos da Shodan",r)
+			ip = obtener_numero_teclado(message)
+			if(ip!=False):
+				print("Mostramos toda la info que nos da Shodan",ip)
+				print()
+				cadena = i.host(ip)
+				print("dad")
+				bot.send_message(chat_id,cadena,parse_mode="HTML")
+
+				posicion=i.localizacion()
+				if(posicion!=False):
+					print("Posición:",posicion)
+					lat_log = posicion.split(";") #parto el array por el igual
+					lat=float(lat_log[0])
+					log=float(lat_log[1])
+
+					bot.send_location(chat_id, lat, log)
 			else:
 				print("No encuntro nada, elimino el teclado")
 				markup = types.ReplyKeyboardRemove(selective=False)
@@ -157,26 +164,29 @@ def echo_all(message):
 		print("El usuario '{}' no está en la BBDD".format(chat_id));
 
 		if(message.text.find("shodan")!=-1):
-			sms = message.text
 			bi = Biblioteca() #Libreria con funciones propias.
-			argumentos = bi.argumentos_validos("shodan",2,sms)
-			if argumentos==False:
-				cadena="<b>SHODAN: </b>Shodan es un motor de búsqueda que le permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros.\n"
+			diccionario = bi.argumentos_validos(message.text)
+			if type(diccionario) is not dict:
+				cadena="<b>Error: </b>"+diccionario+"\n\n<b>Ayuda de uso:</b>\n\n"
+				cadena+="<b>SHODAN: </b>Shodan es un motor de búsqueda que le permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros.\n"
 				cadena+="\n<b>Ejemplos de uso:</b>\n\n<code>shodan 'búsqueda' 'número de búsquedas'</code>\n\n<code>shodan apache</code>\n<code>shodan apache 5</code>\n"
 				cadena+="<code>shodan apache 20</code>.\n\nNota: <b>20</b> es el número máximo de busquedas"
 				bot.send_message(chat_id,cadena,parse_mode="HTML")
 			else:
-				print(argumentos)
+				print("Es un diccionario")
 
-				i = Info_Shodan()
-				res = i.buscar(argumentos[1])
+				res=""
+				if('n' in diccionario):
+					res = i.buscar(diccionario["busqueda"],diccionario["n"])
+				else:
+					res = i.buscar(diccionario["busqueda"])
+
 				resultados = i.nlimit
-
 
 				if(res==True):
 					array_tl = i.datos_telegram()
 					#print("token ip: ",i.obtener_token_array_ip())
-					guardar_usuario_BBDD(i.obtener_token_array_ip(),chat_id)
+					guardar_usuario_BBDD(i.obtener_token_array_ip(),message.text,chat_id)
 					print("Guardamos usuario({})en la BBDD".format(chat_id))
 
 					markup = crear_teclado_tl(resultados) #creamos el teclado del telegram
@@ -189,7 +199,7 @@ def echo_all(message):
 					bot.send_message(chat_id,"<b>Elige una opción (1/"+str(resultados)+"): </b>",parse_mode="HTML",reply_markup=markup)
 
 				elif(res==False):
-						bot.send_message(chat_id,"No hay ningún resultado con la buscada: <b>"+str(argumentos[1]+"</b>"),parse_mode="HTML")
+						bot.send_message(chat_id,"No hay ningún resultado con la buscada: <b>"+str(diccionario["busqueda"]+"</b>"),parse_mode="HTML")
 				else:
 					bot.send_message(chat_id,res,parse_mode="HTML")
 
@@ -222,12 +232,12 @@ def inicializar_bot():
 	except requests.exceptions.ReadTimeout:
 		print("Timeout occurred")
 		time.sleep(2)
-		print("Pausa de 2 segundo")
+		print("Pausa de 2 segundos")
 		inicializar_bot()
 	except requests.exceptions.ConnectionError:
 		print("Error en la conexión")
 		time.sleep(2)
-		print("Pausa de 2 segundo")
+		print("Pausa de 2 segundos")
 		inicializar_bot()
 		#print(except)
 

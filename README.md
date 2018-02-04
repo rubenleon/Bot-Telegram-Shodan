@@ -77,3 +77,9 @@ python3 inicio.py
 ```sh
 python inicio.py
 ```
+## Visualizar la Base de Datos
+
+Para visualizar la Base de Datos generada (**usuarios.db**) utilizamos: http://sqlitebrowser.org/
+
+
+https://www.youtube.com/watch?v=Zpngydf6iwQ&feature=youtu.be
