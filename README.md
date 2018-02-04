@@ -48,6 +48,11 @@ pip3 install pyTelegramBotAPI
 pip3 install shodan
 ```
 
+```sh
+pip3 install sqlite3
+```
+
+
 **Linux** (Arch Linux - Antergos):
 
 ```sh
@@ -58,13 +63,19 @@ pip install pyTelegramBotAPI
 pip install shodan
 ```
 
+```sh
+pip install sqlite3
+```
+
 ## Documentación del Bot
 
-Tenemos que añadir a la api de telegram y de shodan los siguientes ficheros:
+Tenemos que añadir la clave de shodan y de telegram a los siguientes ficheros:
 *shodan-key.txt*
 *telegram-key.txt*
 
-Después ejecutamos el archivo de **inicio.py**
+## Ejecución del Bot
+
+Ejecutamos el archivo **inicio.py**
 
 **Linux** (Ubuntu - Debian):
 
@@ -81,5 +92,5 @@ python inicio.py
 
 Para visualizar la Base de Datos generada (**usuarios.db**) utilizamos: http://sqlitebrowser.org/
 
-
-https://www.youtube.com/watch?v=Zpngydf6iwQ&feature=youtu.be
+## Video de prueba del Bot
+[Video en ejecución del Bot](https://www.youtube.com/watch?v=Zpngydf6iwQ&feature=youtu.be "Bot de Telegram")
