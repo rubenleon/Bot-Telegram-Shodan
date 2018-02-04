@@ -1,5 +1,4 @@
-# Bot de Telegram de Hacking
-> El bot de Telegram incluye herramientas como Shodan, DNS, Whois.
+# Bot de Telegram sobre Shodan
 
 ## Creación del Bot
 
@@ -67,7 +66,7 @@ pip install shodan
 pip install sqlite3
 ```
 
-## Documentación del Bot
+## Apis Externas del Bot
 
 Tenemos que añadir la clave de shodan y de telegram a los siguientes ficheros:
 *shodan-key.txt*

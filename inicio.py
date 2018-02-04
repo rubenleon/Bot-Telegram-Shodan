@@ -10,7 +10,7 @@ import sqlite3 #Libreria para atarcar un .db
 from biblioteca import Biblioteca
 from ishodan import Info_Shodan
 
-os.system("cls")
+#os.system("clear")
 
 ############################################################
 #########               BASE DE DATOS             ##########
