@@ -88,9 +88,10 @@ python3 inicio.py
 ```sh
 python inicio.py
 ```
-## Visualizar la Base de Datos
+## Base de Datos
 
-Para visualizar la Base de Datos generada (**usuarios.db**) utilizamos: http://sqlitebrowser.org/
+Para visualizar la Base de Datos utilizamos la siguiente aplicación: http://sqlitebrowser.org/
 
-## Video de prueba del Bot
-[Video en ejecución del Bot](https://www.youtube.com/watch?v=Zpngydf6iwQ&feature=youtu.be "Bot de Telegram")
+## Video del Bot en Acción
+
+[![Video del Bot](img/video.jpg)](https://www.youtube.com/watch?v=Zpngydf6iwQ)
