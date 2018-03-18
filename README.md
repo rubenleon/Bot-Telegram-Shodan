@@ -79,13 +79,13 @@ Ejecutamos el archivo **start.py**
 **Linux** (Ubuntu - Debian):
 
 ```sh
-python3 inicio.py
+python3 start.py
 ```
 
 **Linux** (Arch Linux - Antergos):
 
 ```sh
-python inicio.py
+python start.py
 ```
 ## Base de Datos
 
