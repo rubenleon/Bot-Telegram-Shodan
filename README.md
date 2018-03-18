@@ -93,4 +93,4 @@ Para visualizar la Base de Datos utilizamos la siguiente aplicación: http://sql
 
 ## Video del Bot en Acción
 
-[![Video del Bot](img/video.jpg)](https://www.youtube.com/watch?v=Zpngydf6iwQ)
+[![Video del Bot](img/video.JPG)](https://www.youtube.com/watch?v=Zpngydf6iwQ)
