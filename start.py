@@ -167,7 +167,9 @@ def echo_all(message):
 			bi = Biblioteca() #Libreria con funciones propias.
 			diccionario = bi.argumentos_validos(message.text)
 			if type(diccionario) is not dict:
-				cadena="<b>Error: </b>"+diccionario+"\n\n<b>Ayuda de uso:</b>\n\n"
+				cadena=""
+				if(diccionario != False):
+					cadena+="<b>Error: </b>"+diccionario+"\n\n<b>Ayuda de uso:</b>\n\n"
 				cadena+="<b>SHODAN: </b>Shodan es un motor de búsqueda que le permite al usuario encontrar iguales o diferentes tipos específicos de equipos (routers, servidores, etc.) conectados a Internet a través de una variedad de filtros.\n"
 				cadena+="\n<b>Ejemplos de uso:</b>\n\n<code>shodan 'búsqueda' 'número de búsquedas'</code>\n\n<code>shodan apache</code>\n<code>shodan apache 5</code>\n"
 				cadena+="<code>shodan apache 20</code>.\n\nNota: <b>20</b> es el número máximo de busquedas"

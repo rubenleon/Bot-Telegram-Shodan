@@ -74,7 +74,7 @@ Tenemos que añadir la clave de shodan y de telegram a los siguientes ficheros:
 
 ## Ejecución del Bot
 
-Ejecutamos el archivo **inicio.py**
+Ejecutamos el archivo **start.py**
 
 **Linux** (Ubuntu - Debian):
 

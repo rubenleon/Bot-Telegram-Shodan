@@ -22,7 +22,7 @@ class Biblioteca():
                 else:
                     return "No has escrito 'shodan' en la instrucción."
             else:
-                return "El máximo de argumentos en 3."
+                return False
         else:
             return "No has escrito ninguna instrucción"
 
